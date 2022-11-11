@@ -5,8 +5,7 @@ import generateQueryString from '../utils/generateQueryString';
 class PostService extends Service {
   static getAllPosts(search: Post.Query) {
     const queryString = generateQueryString(search);
-
-    return this.Http.get<Post.Paginated>(`/posts`.concat(queryString)).then(
+    return this.Http.get<Post.Paginated>('/posts'.concat(queryString)).then(
       this.getData
     );
   }
@@ -20,11 +19,22 @@ class PostService extends Service {
   }
 
   static publishExistingPost(postId: number) {
-    this.Http.put<{}>(`/posts/${postId}/publishing`).then(this.getData);
+    return this.Http.put<{}>(`/posts/${postId}/publishing`).then(this.getData);
   }
 
   static updateExistingPost(postId: number, post: Post.Input) {
-    this.Http.put<Post.Detailed>(`/posts/${postId}`, post).then(this.getData);
+    return this.Http.put<Post.Detailed>(`/posts/${postId}`, post).then(
+      this.getData
+    );
+  }
+
+  static deleteExistingPost(postId: number) {
+    return this.Http.delete<{}>(`/posts/${postId}`).then(this.getData);
+  }
+  static deactivateExistingPost(postId: number) {
+    return this.Http.delete<{}>(`/posts/${postId}/activation`).then(
+      this.getData
+    );
   }
 }
 
